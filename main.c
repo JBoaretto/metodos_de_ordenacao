@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 #include "./metodos/bubbleSort.c" // feito e testado
 #include "./metodos/contagemDosMenores.c" // feito e testado
 #include "./metodos/heapSort.c" // jao
@@ -11,13 +13,12 @@
 #include "./metodos/shellSort.c" // já tem
 /*
     TO DO:
-    - Verificar a entrada de dados (da leitura do arquivo)
     - Implementar demais métodos de ordenação
     - Ajustar os métodos que já tem
     - Testar fluxo do programa (menus, chamadas de funções, etc)
 */
 
-
+char* gerar_nome_arquivo(int caso_registros, int tamanho_vetor, char* nome_arquivo);
 int* ler_vetor(char* nome_arquivo, int tamanho_vetor);
 void menu_algoritmos();
 void menu_casos();
@@ -26,7 +27,7 @@ void menu_tamanhos();
 void printar_vetor_final(int tamanho_vetor, int *vetor);
 
 int main(){
-    
+
     menu_algoritmos();
     int menu;    scanf(" %d", &menu);
 
@@ -34,17 +35,29 @@ int main(){
     int caso;    scanf(" %d", &caso);
 
     menu_tamanhos();
-    int tamanho = 19;
-    // scanf(" %d", &tamanho);
+    int tamanho;    scanf(" %d", &tamanho);
+ 
+    char nome_arquivo[100] = "./casos_de_teste/";
+    gerar_nome_arquivo(caso, tamanho, nome_arquivo);
 
-    //int* vetor = ler_vetor("input", tamanho);
-    int vetor[] = {47, 3, 82, 15, 29, 61, 94, 8, 56, 72, 38, 11, 25, 67, 90, 44, 19, 77, 2, 53};
+    if(tamanho == 1){
+        tamanho = 100;
+    } else if(tamanho == 2){
+        tamanho = 1000;
+    } else if(tamanho == 3){
+        tamanho = 10000;
+    } else if(tamanho == 4){
+        tamanho = 100000;
+    }
+
+    int* vetor = ler_vetor(nome_arquivo, tamanho);
+    printf("%s", nome_arquivo);
 
     int tamanho_vetor = tamanho;
 
     switch (menu) {
     case 1: 
-        bubbleSort(vetor, tamanho_vetor);
+        bubbleSort(vetor, 100);
         break;
     case 2: selectionSort();   
         break;
@@ -90,6 +103,41 @@ int main(){
     return 0;
 }
 
+char* gerar_nome_arquivo(int caso_registros, int tamanho_vetor, char* nome_arquivo){
+    if(caso_registros == 1){
+        strcat(nome_arquivo, "ordenado_");
+    }else if(caso_registros == 2){
+        strcat(nome_arquivo, "inverso_");
+    }else if(caso_registros == 3){
+        strcat(nome_arquivo, "aleatorio_");
+    }
+
+    if(tamanho_vetor == 1){
+        strcat(nome_arquivo, "100");
+    } else if(tamanho_vetor == 2){
+        strcat(nome_arquivo, "1000");
+    } else if(tamanho_vetor == 3){
+        strcat(nome_arquivo, "10000");
+    } else if(tamanho_vetor == 4){
+        strcat(nome_arquivo, "100000");
+    }
+
+    if(caso_registros == 3){
+        printf("Escolha o caso de teste de 1 a 5 para o vetor aleatório: ");
+        int aleatorio; scanf("%d", &aleatorio);
+        strcat(nome_arquivo, "_run");
+
+        char sufixo[2];
+        sprintf(sufixo, "%d", aleatorio);
+
+        strcat(nome_arquivo, sufixo);
+    }
+    
+    strcat(nome_arquivo, ".in");
+
+    return nome_arquivo;
+}
+
 /*
     Para ter o nome do arquivo, já preciso saber o tamanho do vetor, 
     ou seja, não preciso usar como um ponteiro para poder retornar e 
@@ -97,7 +145,7 @@ int main(){
     métodos de ordenação (já que o tamanho já foi escolhido)
 */
 int* ler_vetor(char* nome_arquivo, int tamanho_vetor){
-    // casos_teste/ordenado_100_run1
+    // ./casos_teste/+ordenado_100_run1+.in
     FILE* arquivo = fopen(nome_arquivo, "r");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo %s\n", nome_arquivo);
@@ -151,7 +199,6 @@ void menu_tamanhos(){
     printf("[3] 10.000 elementos\n");
     printf("[4] 100.000 elementos\n\n");
 }
-
 
 void printar_vetor_final(int tamanho_vetor, int *vetor){
     printf("\nVetor Ordenado = [");

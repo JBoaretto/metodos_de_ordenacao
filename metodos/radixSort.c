@@ -7,6 +7,7 @@ int obter_maior_valor(int *vetor, int tamanho_vetor){
             max = vetor[i];
         }
     }
+    return max;
 }
 
 void Contagem_de_Tipos(int *vetor, int tamanho_vetor, int exp){
