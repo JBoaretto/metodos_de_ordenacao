@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-void hello(){
-    printf("Hello, World!\n");
-    return;
+void bubbleSort(){
+    printf("BubbleSort selecionado!\n");
 }
