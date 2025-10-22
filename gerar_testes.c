@@ -33,10 +33,7 @@ void escrever_arquivo(const char* nome_arquivo, int n, int* vetor) {
         return;
     }
 
-    // 1. Escreve o tamanho N na primeira linha
-    fprintf(f, "%d\n", n);
-
-    // 2. Escreve os N elementos, um por linha
+    // 1. Escreve os N elementos, um por linha
     for (int i = 0; i < n; i++) {
         fprintf(f, "%d\n", vetor[i]);
     }
