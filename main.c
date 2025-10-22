@@ -1,14 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "./metodos/bubbleSort.c"
-#include "./metodos/contagemDosMenores.c"
-#include "./metodos/heapSort.c"
-#include "./metodos/insertionSort.c"
-#include "./metodos/mergeSort.c"
-#include "./metodos/quickSort.c"
-#include "./metodos/radixSort.c"
-#include "./metodos/selectionSort.c"
-#include "./metodos/shellSort.c"
+#include "./metodos/bubbleSort.c" // feito
+#include "./metodos/contagemDosMenores.c" // sofia
+#include "./metodos/heapSort.c" // jao
+#include "./metodos/insertionSort.c" // já tem
+#include "./metodos/mergeSort.c" // já tem
+#include "./metodos/quickSort.c" // já tem
+#include "./metodos/radixSort.c" // sofia
+#include "./metodos/selectionSort.c" // jao
+#include "./metodos/shellSort.c" // já tem
+/*
+    TO DO:
+    - Verificar a entrada de dados (da leitura do arquivo)
+    - Implementar demais métodos de ordenação
+    - Ajustar os métodos que já tem
+    - Testar fluxo do programa (menus, chamadas de funções, etc)
+*/
+
 
 int* ler_vetor(char* nome_arquivo, int tamanho_vetor);
 void menu_algoritmos();
@@ -28,7 +36,8 @@ int main(){
 
 
     switch (menu) {
-    case 1: bubbleSort();
+    case 1: 
+        // bubbleSort();
         break;
     case 2: selectionSort();   
         break;
@@ -47,7 +56,7 @@ int main(){
     case 9: radixSort();   
         break;
     case 0:
-        bubbleSort();
+        // bubbleSort();
         selectionSort();
         insertionSort();
         shellSort();
