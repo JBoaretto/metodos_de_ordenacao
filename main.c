@@ -34,10 +34,12 @@ int main(){
     menu_tamanhos();
     int tamanho;    scanf("%d", &tamanho);
 
+    int* vetor = ler_vetor("input", tamanho); //ve se ta certo kkkkkkkkkkk
+    int tamanho_vetor = tamanho;
 
     switch (menu) {
     case 1: 
-        // bubbleSort();
+        bubbleSort(vetor, tamanho_vetor);
         break;
     case 2: selectionSort();   
         break;
@@ -56,7 +58,7 @@ int main(){
     case 9: radixSort(vetor, tamanho_vetor);   
         break;
     case 0:
-        // bubbleSort();
+        bubbleSort(vetor, tamanho_vetor);
         selectionSort();
         insertionSort();
         shellSort();
