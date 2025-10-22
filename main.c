@@ -8,7 +8,7 @@
 #include "./metodos/quickSort.c"
 #include "./metodos/radixSort.c"
 #include "./metodos/selectionSort.c"
-#include "./metodos/shellShort.c"
+#include "./metodos/shellSort.c"
 
 int* ler_vetor(char* nome_arquivo, int* tamanho_vetor);
 
@@ -30,13 +30,13 @@ int main(){
     int menu;    scanf("%d", &menu);
 
     switch (menu) {
-    case 1: bubbleSort();
+    case 1: bubbleSort(vetor, tamanho_vetor);
         break;
     case 2: selectionSort();   
         break;
     case 3: insertionSort();
         break;
-    case 4: shellShort();   
+    case 4: shellSort();   
         break;
     case 5: quickSort();   
         break;
@@ -49,10 +49,10 @@ int main(){
     case 9: radixSort();   
         break;
     case 0:
-        bubbleSort();
+        bubbleSort(vetor, tamanho_vetor);
         selectionSort();
         insertionSort();
-        shellShort();
+        shellSort();
         quickSort();
         heapSort();
         mergeSort();
