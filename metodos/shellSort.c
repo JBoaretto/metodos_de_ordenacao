@@ -1,5 +1,5 @@
 #include <stdio.h>
 
-void shellShort(){
+void shellSort(){
     printf("shellShort selecionado!\n");
 }
