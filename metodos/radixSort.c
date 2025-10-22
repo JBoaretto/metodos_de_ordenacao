@@ -35,13 +35,13 @@ void CountingSort(int *vetor, int tamanho_vetor, int exp){
     }
 }
 
-void radixSort(vetor, tamanho_vetor){
+void radixSort(int *vetor, int tamanho_vetor){
     printf("radixSort selecionado!\n");
 
     // Implementação do Radix Sort
     int max = obter_maior_valor(vetor, tamanho_vetor);
     
     for (int exp = 1; max / exp > 0; exp *= 10){
-        countingSort(vetor, tamanho_vetor, exp);   
+        CountingSort(vetor, tamanho_vetor, exp);   
     }
 }

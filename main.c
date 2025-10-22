@@ -23,18 +23,23 @@ void menu_algoritmos();
 void menu_casos();
 void menu_tamanhos();
 
+void printar_vetor_final(int tamanho_vetor, int *vetor);
+
 int main(){
     
     menu_algoritmos();
-    int menu;    scanf("%d", &menu);
+    int menu;    scanf(" %d", &menu);
 
     menu_casos();
-    int caso;    scanf("%d", &caso);
+    int caso;    scanf(" %d", &caso);
 
     menu_tamanhos();
-    int tamanho;    scanf("%d", &tamanho);
+    int tamanho = 19;
+    // scanf(" %d", &tamanho);
 
-    int* vetor = ler_vetor("input", tamanho); //ve se ta certo kkkkkkkkkkk
+    // int* vetor = ler_vetor("input", tamanho);
+    int vetor[] = {47, 3, 82, 15, 29, 61, 94, 8, 56, 72, 38, 11, 25, 67, 90, 44, 19, 77, 2, 53};
+
     int tamanho_vetor = tamanho;
 
     switch (menu) {
@@ -71,6 +76,18 @@ int main(){
     default: printf("Opcao invalida!\n");
         break;
     }
+
+    if(menu != 0){
+        printf("Você deseja apresentar o vetor ordenado? [Y/N]\n");
+        char printar; scanf(" %c", &printar);
+
+        if(printar == 'Y' || printar == 'y'){
+            printar_vetor_final(tamanho_vetor, vetor);
+        }
+    }
+    
+    printf("\n\nPrograma concluído!\n\n");
+    return 0;
 }
 
 /*
@@ -94,7 +111,7 @@ int* ler_vetor(char* nome_arquivo, int tamanho_vetor){
     }
 
     for (int i = 0; i < tamanho_vetor; i++) {
-        fscanf(arquivo, "%d", &vetor[i]);
+        fscanf(arquivo, " %d", &vetor[i]);
     }
 
     fclose(arquivo);
@@ -132,4 +149,17 @@ void menu_tamanhos(){
     printf("[2] 1.000 elementos\n");
     printf("[3] 10.000 elementos\n");
     printf("[4] 100.000 elementos\n\n");
+}
+
+
+void printar_vetor_final(int tamanho_vetor, int *vetor){
+    printf("\nVetor Ordenado = [");
+    for(int k = 0; k < tamanho_vetor; k++){
+        if(k - tamanho_vetor == -1){
+            printf("%d", vetor[k]);
+        }else{
+            printf("%d, ", vetor[k]);
+        }
+    }
+    printf("]");
 }

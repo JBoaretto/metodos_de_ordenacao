@@ -16,5 +16,4 @@ void bubbleSort(int* vetor, int tamanho_vetor) {
             }
         }
     }
-
 }
