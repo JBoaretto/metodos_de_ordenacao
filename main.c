@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "./metodos/bubbleSort.c"
+#include "./metodos/bubbleSort.c" 
 #include "./metodos/contagemDosMenores.c"
 #include "./metodos/heapSort.c"
 #include "./metodos/insertionSort.c"
@@ -46,7 +46,7 @@ int main(){
         break;
     case 8: contagemDosMenores();   
         break;
-    case 9: radixSort();   
+    case 9: radixSort(vetor, tamanho_vetor);   
         break;
     case 0:
         bubbleSort(vetor, tamanho_vetor);
@@ -57,7 +57,7 @@ int main(){
         heapSort();
         mergeSort();
         contagemDosMenores();
-        radixSort();
+        radixSort(vetor, tamanho_vetor);
         break;    
     default: printf("Opcao invalida!\n");
         break;
