@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "./metodos/bubbleSort.c" // feito
-#include "./metodos/contagemDosMenores.c" // sofia
+#include "./metodos/bubbleSort.c" // feito e testado
+#include "./metodos/contagemDosMenores.c" // feito e testado
 #include "./metodos/heapSort.c" // jao
 #include "./metodos/insertionSort.c" // já tem
 #include "./metodos/mergeSort.c" // já tem
 #include "./metodos/quickSort.c" // já tem
-#include "./metodos/radixSort.c" // sofia
+#include "./metodos/radixSort.c" // feito e testado
 #include "./metodos/selectionSort.c" // jao
 #include "./metodos/shellSort.c" // já tem
 /*
@@ -37,7 +37,7 @@ int main(){
     int tamanho = 19;
     // scanf(" %d", &tamanho);
 
-    // int* vetor = ler_vetor("input", tamanho);
+    //int* vetor = ler_vetor("input", tamanho);
     int vetor[] = {47, 3, 82, 15, 29, 61, 94, 8, 56, 72, 38, 11, 25, 67, 90, 44, 19, 77, 2, 53};
 
     int tamanho_vetor = tamanho;
@@ -58,7 +58,7 @@ int main(){
         break;
     case 7: mergeSort();   
         break;
-    case 8: contagemDosMenores();   
+    case 8: contagemDosMenores(vetor, tamanho_vetor);   
         break;
     case 9: radixSort(vetor, tamanho_vetor);   
         break;
@@ -70,7 +70,7 @@ int main(){
         quickSort();
         heapSort();
         mergeSort();
-        contagemDosMenores();
+        contagemDosMenores(vetor, tamanho_vetor);
         radixSort(vetor, tamanho_vetor);
         break;    
     default: printf("Opcao invalida!\n");
@@ -85,7 +85,7 @@ int main(){
             printar_vetor_final(tamanho_vetor, vetor);
         }
     }
-    
+
     printf("\n\nPrograma concluído!\n\n");
     return 0;
 }
@@ -97,6 +97,7 @@ int main(){
     métodos de ordenação (já que o tamanho já foi escolhido)
 */
 int* ler_vetor(char* nome_arquivo, int tamanho_vetor){
+    // casos_teste/ordenado_100_run1
     FILE* arquivo = fopen(nome_arquivo, "r");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo %s\n", nome_arquivo);
