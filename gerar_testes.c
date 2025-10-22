@@ -3,24 +3,14 @@
 #include <time.h>
 #include <string.h>
 
-// --- Inclusão de cabeçalhos para criar diretório ---
 #ifdef _WIN32
-    #include <direct.h> // Para _mkdir no Windows
+    #include <direct.h> // Para mkdir no Windows
 #else
     #include <sys/stat.h> // Para mkdir no POSIX (Linux/macOS)
     #include <sys/types.h> // Para mkdir no POSIX
 #endif
-// --------------------------------------------------
 
-/**
- * @brief Cria um diretório se ele ainda não existir.
- * @param nome_dir O nome do diretório a ser criado.
- */
 void criar_diretorio(const char* nome_dir) {
-    // _mkdir no Windows (retorna 0 se sucesso, -1 se erro)
-    // mkdir no POSIX (retorna 0 se sucesso, -1 se erro)
-    // Em ambos os casos, se o diretório já existe, ele retorna um erro (EEXIST),
-    // o que podemos ignorar para este script simples.
     #ifdef _WIN32
         _mkdir(nome_dir);
     #else
@@ -39,7 +29,7 @@ void criar_diretorio(const char* nome_dir) {
 void escrever_arquivo(const char* nome_arquivo, int n, int* vetor) {
     FILE *f = fopen(nome_arquivo, "w");
     if (f == NULL) {
-        fprintf(stderr, "Erro: Não foi possível criar o arquivo %s\n", nome_arquivo);
+        fprintf(stderr, "Erro: Nao foi possivel criar o arquivo %s\n", nome_arquivo);
         return;
     }
 
@@ -66,7 +56,7 @@ int main() {
     // 1. (NOVO) Cria o diretório de saída antes de começar
     criar_diretorio(NOME_DIRETORIO);
 
-    // Semeia o gerador de números aleatórios UMA VEZ
+    // Garantir aleatoriedade (UMA ÚNICA VEZ)
     srand(time(NULL));
 
     printf("Iniciando a geração de casos de teste na pasta '%s/'...\n", NOME_DIRETORIO);
@@ -83,15 +73,12 @@ int main() {
             continue; 
         }
 
-        // Buffer para o nome do arquivo (aumentei o tamanho para comportar o nome do dir)
         char nome_arquivo[128]; 
 
         // ---- 1. Vetor Ordenado (Crescente) ----
         for (int j = 0; j < n; j++) {
             vetor[j] = j + 1; // 1, 2, 3, ... N
         }
-        // (MODIFICADO) Adiciona o nome do diretório ao caminho
-        // A barra '/' funciona como separador tanto no Windows quanto no Linux/macOS
         sprintf(nome_arquivo, "%s/ordenado_%d.in", NOME_DIRETORIO, n);
         escrever_arquivo(nome_arquivo, n, vetor);
         printf("  -> %s gerado.\n", nome_arquivo);
@@ -100,7 +87,6 @@ int main() {
         for (int j = 0; j < n; j++) {
             vetor[j] = n - j; // N, N-1, ... 1
         }
-        // (MODIFICADO)
         sprintf(nome_arquivo, "%s/inverso_%d.in", NOME_DIRETORIO, n);
         escrever_arquivo(nome_arquivo, n, vetor);
         printf("  -> %s gerado.\n", nome_arquivo);
@@ -111,7 +97,6 @@ int main() {
             for (int j = 0; j < n; j++) {
                 vetor[j] = rand() % (n * 2);
             }
-            // (MODIFICADO)
             sprintf(nome_arquivo, "%s/aleatorio_%d_run%d.in", NOME_DIRETORIO, n, run + 1);
             escrever_arquivo(nome_arquivo, n, vetor);
         }
@@ -122,6 +107,6 @@ int main() {
         free(vetor);
     }
 
-    printf("\nProcesso concluído! Todos os arquivos .in foram gerados em '%s/'.\n", NOME_DIRETORIO);
+    printf("\nProcesso concluido! Todos os arquivos .in foram gerados em '%s/'.\n", NOME_DIRETORIO);
     return 0;
 }
