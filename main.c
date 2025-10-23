@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
-#include "./metodos/bubbleSort.c" // feito e testado
+#include "./metodos/bubbleSort.c" // feito, testado e com contagem de comparações e movimentações
 #include "./metodos/contagemDosMenores.c" // feito e testado
 #include "./metodos/heapSort.c" // jao
 #include "./metodos/insertionSort.c" // já tem
@@ -16,6 +17,7 @@
     - Implementar demais métodos de ordenação
     - Ajustar os métodos que já tem
     - Testar fluxo do programa (menus, chamadas de funções, etc)
+    - Adicionar a contagem de comparações e movimentações em todos os métodos
 */
 
 char* gerar_nome_arquivo(int caso_registros, int tamanho_vetor, char* nome_arquivo);
@@ -27,6 +29,9 @@ void menu_tamanhos();
 void printar_vetor_final(int tamanho_vetor, int *vetor);
 
 int main(){
+
+    long comparacoes = 0;
+    long movimentacoes = 0;
 
     menu_algoritmos();
     int menu;    scanf(" %d", &menu);
@@ -51,13 +56,14 @@ int main(){
     }
 
     int* vetor = ler_vetor(nome_arquivo, tamanho);
-    printf("%s", nome_arquivo);
-
     int tamanho_vetor = tamanho;
+
+    clock_t inicio, fim;
+    inicio = clock();
 
     switch (menu) {
     case 1: 
-        bubbleSort(vetor, 100);
+        bubbleSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes);
         break;
     case 2: selectionSort();   
         break;
@@ -73,10 +79,10 @@ int main(){
         break;
     case 8: contagemDosMenores(vetor, tamanho_vetor);   
         break;
-    case 9: radixSort(vetor, tamanho_vetor);   
+    case 9: radixSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes);   
         break;
     case 0:
-        bubbleSort(vetor, tamanho_vetor);
+        bubbleSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes);
         selectionSort();
         insertionSort();
         shellSort();
@@ -84,14 +90,20 @@ int main(){
         heapSort();
         mergeSort();
         contagemDosMenores(vetor, tamanho_vetor);
-        radixSort(vetor, tamanho_vetor);
+        radixSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes);
         break;    
     default: printf("Opcao invalida!\n");
         break;
     }
+    
+    fim = clock();
+    double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
+    printf("Tempo de execucao: %.4f\n", tempo);
+    printf("Numero de comparacoes: %ld\n", comparacoes);
+    printf("Numero de movimentacoes: %ld\n\n", movimentacoes);
 
     if(menu != 0){
-        printf("Você deseja apresentar o vetor ordenado? [Y/N]\n");
+        printf("Voce deseja apresentar o vetor ordenado? [Y/N]\n");
         char printar; scanf(" %c", &printar);
 
         if(printar == 'Y' || printar == 'y'){
@@ -99,7 +111,7 @@ int main(){
         }
     }
 
-    printf("\n\nPrograma concluído!\n\n");
+    printf("\n\nPrograma concluido!\n\n");
     return 0;
 }
 
@@ -123,7 +135,7 @@ char* gerar_nome_arquivo(int caso_registros, int tamanho_vetor, char* nome_arqui
     }
 
     if(caso_registros == 3){
-        printf("Escolha o caso de teste de 1 a 5 para o vetor aleatório: ");
+        printf("Escolha o caso de teste de 1 a 5 para o vetor aleatorio: ");
         int aleatorio; scanf("%d", &aleatorio);
         strcat(nome_arquivo, "_run");
 
