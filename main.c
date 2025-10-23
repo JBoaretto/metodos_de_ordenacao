@@ -9,7 +9,7 @@
 #include "./metodos/insertionSort.c" // já tem
 #include "./metodos/mergeSort.c" // já tem
 #include "./metodos/quickSort.c" // já tem
-#include "./metodos/radixSort.c" // feito e testado
+#include "./metodos/radixSort.c" // feito, testado e com contagem de comparações e movimentações
 #include "./metodos/selectionSort.c" // jao
 #include "./metodos/shellSort.c" // já tem
 /*
