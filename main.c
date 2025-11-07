@@ -4,7 +4,7 @@
 #include <time.h>
 
 #include "./metodos/bubbleSort.c" // feito, testado e com contagem de comparações e movimentações
-#include "./metodos/contagemDosMenores.c" // feito e testado
+#include "./metodos/contagemDosMenores.c" // feito, testado e com contagem de comparações e movimentações
 #include "./metodos/heapSort.c" // jao
 #include "./metodos/insertionSort.c" // já tem
 #include "./metodos/mergeSort.c" // já tem
@@ -77,7 +77,7 @@ int main(){
         break;
     case 7: mergeSort();   
         break;
-    case 8: contagemDosMenores(vetor, tamanho_vetor);   
+    case 8: contagemDosMenores(vetor, tamanho_vetor, &comparacoes, &movimentacoes);   
         break;
     case 9: radixSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes);   
         break;
@@ -89,7 +89,7 @@ int main(){
         quickSort();
         heapSort();
         mergeSort();
-        contagemDosMenores(vetor, tamanho_vetor);
+        contagemDosMenores(vetor, tamanho_vetor, &comparacoes, &movimentacoes);
         radixSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes);
         break;    
     default: printf("Opcao invalida!\n");
