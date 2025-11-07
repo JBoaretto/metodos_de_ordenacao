@@ -61,7 +61,7 @@ int main(){
     clock_t inicio, fim;
     inicio = clock();
 
-    switch (menu) {
+    switch (menu) { // Menu de escolha do método de ordenação
     case 1: 
         bubbleSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes);
         break;
@@ -98,6 +98,9 @@ int main(){
     
     fim = clock();
     double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
+
+    // Retornando resultados para o usuário
+
     printf("Tempo de execucao: %.4f\n", tempo);
     printf("Numero de comparacoes: %ld\n", comparacoes);
     printf("Numero de movimentacoes: %ld\n\n", movimentacoes);
