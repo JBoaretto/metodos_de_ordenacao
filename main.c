@@ -20,105 +20,139 @@
     - Adicionar a contagem de comparações e movimentações em todos os métodos
 */
 
-char* gerar_nome_arquivo(int caso_registros, int tamanho_vetor, char* nome_arquivo);
+char* gerar_nome_arquivo(int caso_registros, int tamanho_vetor, char* nome_arquivo, int run);
 int* ler_vetor(char* nome_arquivo, int tamanho_vetor);
 void menu_algoritmos();
 void menu_casos();
 void menu_tamanhos();
-
 void printar_vetor_final(int tamanho_vetor, int *vetor);
 
 int main(){
-
-    long comparacoes = 0;
-    long movimentacoes = 0;
+    long comparacoes = 0, movimentacoes = 0;
+    double tempo = 0.0;
 
     menu_algoritmos();
     int menu;    scanf(" %d", &menu);
+
+    if(menu < 1 || menu > 9){
+        printf("Opcao Invalida!\n");
+        return 0;
+    }
 
     menu_casos();
     int caso;    scanf(" %d", &caso);
 
     menu_tamanhos();
-    int tamanho;    scanf(" %d", &tamanho);
- 
-    char nome_arquivo[100] = "./casos_de_teste/";
-    gerar_nome_arquivo(caso, tamanho, nome_arquivo);
+    int tamanho_vetor;    scanf(" %d", &tamanho_vetor);
 
-    if(tamanho == 1){
-        tamanho = 100;
-    } else if(tamanho == 2){
-        tamanho = 1000;
-    } else if(tamanho == 3){
-        tamanho = 10000;
-    } else if(tamanho == 4){
-        tamanho = 100000;
+    if(tamanho_vetor == 1) tamanho_vetor = 100;
+    else if(tamanho_vetor == 2) tamanho_vetor = 1000;
+    else if(tamanho_vetor == 3) tamanho_vetor = 10000;
+    else if(tamanho_vetor == 4) tamanho_vetor = 100000;
+    else {
+        printf("Tamanho invalido!\n");
+        return 0;
     }
 
-    int* vetor = ler_vetor(nome_arquivo, tamanho);
-    int tamanho_vetor = tamanho;
+    char nome_arquivo[100];
 
-    clock_t inicio, fim;
-    inicio = clock();
+    if(caso == 3){ // Vetor Aleatório: Executar 5 vezes e tirar média
+        double soma_tempo = 0;
+        long soma_comparacoes = 0, soma_movimentacoes = 0;
 
-    switch (menu) { // Menu de escolha do método de ordenação
-    case 1: 
-        bubbleSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes);
-        break;
-    case 2: selectionSort();   
-        break;
-    case 3: insertionSort();
-        break;
-    case 4: shellSort();   
-        break;
-    case 5: quickSort();   
-        break;
-    case 6: heapSort();
-        break;
-    case 7: mergeSort();   
-        break;
-    case 8: contagemDosMenores(vetor, tamanho_vetor, &comparacoes, &movimentacoes);   
-        break;
-    case 9: radixSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes);   
-        break;
-    case 0:
-        bubbleSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes);
-        selectionSort();
-        insertionSort();
-        shellSort();
-        quickSort();
-        heapSort();
-        mergeSort();
-        contagemDosMenores(vetor, tamanho_vetor, &comparacoes, &movimentacoes);
-        radixSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes);
-        break;    
-    default: printf("Opcao invalida!\n");
-        break;
-    }
-    
-    fim = clock();
-    double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
+        for (int run = 1; run <= 5; run++) {
+            gerar_nome_arquivo(caso, tamanho_vetor, nome_arquivo, run);
 
-    // Retornando resultados para o usuário
+            int* vetor = ler_vetor(nome_arquivo, tamanho_vetor);
+            if (!vetor) {
+                printf("Erro ao carregar vetor %d!\n", run);
+                continue;
+            }
 
-    printf("Tempo de execucao: %.4f\n", tempo);
-    printf("Numero de comparacoes: %ld\n", comparacoes);
-    printf("Numero de movimentacoes: %ld\n\n", movimentacoes);
+            comparacoes = movimentacoes = 0;
+            clock_t inicio = clock();
 
-    if(menu != 0){
+            switch (menu) { // Menu de escolha do método de ordenação
+                case 1: bubbleSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                case 2: selectionSort(); break;
+                case 3: insertionSort(); break;
+                case 4: shellSort(); break;
+                case 5: quickSort(); break;
+                case 6: heapSort(); break;
+                case 7: mergeSort(); break;
+                case 8: contagemDosMenores(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                case 9: radixSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;  
+                default: printf("Opcao invalida!\n"); break;
+            }
+
+            clock_t fim = clock();
+            tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
+
+            soma_tempo += tempo;
+            soma_comparacoes += comparacoes;
+            soma_movimentacoes += movimentacoes;
+
+            free(vetor);
+        }
+
+        // Retornando resultados para o usuário
+        printf("\n===== RESULTADOS MEDIOS (5 execucoes) =====\n");
+        printf("Tempo medio: %.4f s\n", soma_tempo / 5);
+        printf("Comparacoes medias: %ld\n", soma_comparacoes / 5);
+        printf("Movimentacoes medias: %ld\n", soma_movimentacoes / 5);
+
+    }else{
+        gerar_nome_arquivo(caso, tamanho_vetor, nome_arquivo, 0);
+
+        int* vetor = ler_vetor(nome_arquivo, tamanho_vetor);
+        if(!vetor){
+            printf("Erro ao carregar o vetor!\n");
+            return 0;
+        }
+
+        clock_t inicio, fim;
+        inicio = clock();
+
+        switch (menu) { // Menu de escolha do método de ordenação
+            case 1: bubbleSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+            case 2: selectionSort(); break;
+            case 3: insertionSort(); break;
+            case 4: shellSort(); break;
+            case 5: quickSort(); break;
+            case 6: heapSort(); break;
+            case 7: mergeSort(); break;
+            case 8: contagemDosMenores(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+            case 9: radixSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;  
+            default: printf("Opcao invalida!\n"); break;
+        }
+        
+        fim = clock();
+        tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
+
+        // Retornando resultados para o usuário
+        
+        printf("\n===== RESULTADOS =====\n");
+        printf("Tempo de execucao: %.4f\n", tempo);
+        printf("Numero de comparacoes: %ld\n", comparacoes);
+        printf("Numero de movimentacoes: %ld\n\n", movimentacoes);
+
         printf("Voce deseja apresentar o vetor ordenado? [Y/N]\n");
         char printar; scanf(" %c", &printar);
 
         if(printar == 'Y' || printar == 'y'){
             printar_vetor_final(tamanho_vetor, vetor);
         }
+        free(vetor);
     }
 
     printf("\n\nPrograma concluido!\n\n");
     return 0;
 }
 
-char* gerar_nome_arquivo(int caso_registros, int tamanho_vetor, char* nome_arquivo){
+
+char* gerar_nome_arquivo(int caso_registros, int tamanho_vetor, char* nome_arquivo, int run){
+    strcpy(nome_arquivo, "./casos_de_teste/");
+
     if(caso_registros == 1){
         strcat(nome_arquivo, "ordenado_");
     }else if(caso_registros == 2){
@@ -127,29 +161,18 @@ char* gerar_nome_arquivo(int caso_registros, int tamanho_vetor, char* nome_arqui
         strcat(nome_arquivo, "aleatorio_");
     }
 
-    if(tamanho_vetor == 1){
-        strcat(nome_arquivo, "100");
-    } else if(tamanho_vetor == 2){
-        strcat(nome_arquivo, "1000");
-    } else if(tamanho_vetor == 3){
-        strcat(nome_arquivo, "10000");
-    } else if(tamanho_vetor == 4){
-        strcat(nome_arquivo, "100000");
-    }
+    char tamanho_str[10];
+    sprintf(tamanho_str, "%d", tamanho_vetor);
+    strcat(nome_arquivo, tamanho_str);
 
-    if(caso_registros == 3){
-        printf("Escolha o caso de teste de 1 a 5 para o vetor aleatorio: ");
-        int aleatorio; scanf("%d", &aleatorio);
-        strcat(nome_arquivo, "_run");
-
-        char sufixo[2];
-        sprintf(sufixo, "%d", aleatorio);
-
+    // Só adiciona o numero do arquivo run se for vetor aleatório
+    if (caso_registros == 3 && run > 0) {
+        char sufixo[10];
+        sprintf(sufixo, "_run%d", run);
         strcat(nome_arquivo, sufixo);
     }
-    
-    strcat(nome_arquivo, ".in");
 
+    strcat(nome_arquivo, ".in");
     return nome_arquivo;
 }
 
@@ -195,7 +218,6 @@ void menu_algoritmos(){
     printf("[7] MergeSort\n");
     printf("[8] Contagem dos Menores\n");
     printf("[9] RadixSort\n");
-    printf("[0] Quero testar todos\n\n");
 }
 
 void menu_casos(){
