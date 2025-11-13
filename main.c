@@ -74,12 +74,12 @@ int main(){
 
             switch (menu) { // Menu de escolha do método de ordenação
                 case 1: bubbleSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
-                case 2: selectionSort(); break;
-                case 3: insertionSort(); break;
-                case 4: shellSort(); break;
-                case 5: quickSort(); break;
-                case 6: heapSort(); break;
-                case 7: mergeSort(); break;
+                case 2: selectionSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                case 3: insertionSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                case 4: shellSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                case 5: quickSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                case 6: heapSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                case 7: mergeSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
                 case 8: contagemDosMenores(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
                 case 9: radixSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;  
                 default: printf("Opcao invalida!\n"); break;
@@ -115,12 +115,12 @@ int main(){
 
         switch (menu) { // Menu de escolha do método de ordenação
             case 1: bubbleSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
-            case 2: selectionSort(); break;
-            case 3: insertionSort(); break;
-            case 4: shellSort(); break;
-            case 5: quickSort(); break;
-            case 6: heapSort(); break;
-            case 7: mergeSort(); break;
+            case 2: selectionSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+            case 3: insertionSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+            case 4: shellSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+            case 5: quickSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+            case 6: heapSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+            case 7: mergeSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
             case 8: contagemDosMenores(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
             case 9: radixSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;  
             default: printf("Opcao invalida!\n"); break;

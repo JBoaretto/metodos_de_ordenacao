@@ -43,7 +43,7 @@ void Contagem_de_Tipos(int *vetor, int tamanho_vetor, int exp, long* comparacoes
 }
 
 void radixSort(int* vetor, int tamanho_vetor, long* comparacoes, long* movimentacoes){
-    printf("radixSort selecionado!\n");
+    printf("RadixSort selecionado!\n");
 
     // Implementação do Radix Sort
     int max = obter_maior_valor(vetor, tamanho_vetor, comparacoes, movimentacoes);
