@@ -3,22 +3,16 @@
 #include <string.h>
 #include <time.h>
 
-#include "./metodos/bubbleSort.c" // feito, testado e com contagem de comparações e movimentações
-#include "./metodos/contagemDosMenores.c" // feito, testado e com contagem de comparações e movimentações
-#include "./metodos/heapSort.c" // jao
-#include "./metodos/insertionSort.c" // já tem
-#include "./metodos/mergeSort.c" // já tem
-#include "./metodos/quickSort.c" // já tem
-#include "./metodos/radixSort.c" // feito, testado e com contagem de comparações e movimentações
-#include "./metodos/selectionSort.c" // jao
-#include "./metodos/shellSort.c" // já tem
-/*
-    TO DO:
-    - Implementar demais métodos de ordenação
-    - Ajustar os métodos que já tem
-    - Testar fluxo do programa (menus, chamadas de funções, etc)
-    - Adicionar a contagem de comparações e movimentações em todos os métodos
-*/
+#include "./metodos/bubbleSort.c"
+#include "./metodos/contagemDosMenores.c"
+#include "./metodos/heapSort.c"
+#include "./metodos/insertionSort.c"
+#include "./metodos/mergeSort.c"
+#include "./metodos/quickSort.c"
+#include "./metodos/radixSort.c"
+#include "./metodos/selectionSort.c"
+#include "./metodos/shellSort.c"
+
 
 char* gerar_nome_arquivo(int caso_registros, int tamanho_vetor, char* nome_arquivo, int run);
 int* ler_vetor(char* nome_arquivo, int tamanho_vetor);
@@ -69,7 +63,8 @@ int main(){
                 continue;
             }
 
-            comparacoes = movimentacoes = 0;
+            // comparacoes = 0;
+            // movimentacoes = 0;
             clock_t inicio = clock();
 
             switch (menu) { // Menu de escolha do método de ordenação

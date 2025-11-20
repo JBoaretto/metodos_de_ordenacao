@@ -43,6 +43,7 @@ static void quicksort_rec(int* vetor, int low, int high, long* comparacoes, long
     // Coloca o pivô em high-1
     swap_int(&vetor[mid], &vetor[high - 1], movimentacoes);
     int pivot = vetor[high - 1];
+    (*movimentacoes)++;
 
     int i = low;
     int j = high - 1;

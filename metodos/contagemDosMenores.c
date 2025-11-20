@@ -7,8 +7,8 @@ void contagemDosMenores(int *vetor, int tamanho_vetor, long* comparacoes, long* 
     int array_final[tamanho_vetor];
     int i, j;
 
-    *comparacoes = 0;
-    *movimentacoes = 0;
+    if (comparacoes) *comparacoes = 0;
+    if (movimentacoes) *movimentacoes = 0;
 
     for(i = 0; i < tamanho_vetor; i++){
         arranjo_aux[i] = 0;

@@ -25,7 +25,6 @@ void shellSort(int* vetor, int tamanho_vetor, long* comparacoes, long* movimenta
             int j = i;
 
              while (1) {
-                (*comparacoes)++;
                 if (j < gap) break;
 
                 (*comparacoes)++;

@@ -15,7 +15,7 @@ static void heapify(int *vetor, int tamanho_vetor, int i, long *comparacoes, lon
     int right = 2 * i + 2;
 
     // Compara filho esquerdo com o pai
-    if (left < tamanho_vetor) {
+    if (left < tamanho_vetor) {  // Comparação de índice não conta
         (*comparacoes)++;                     
         if (vetor[left] > vetor[largest]) {
             largest = left;

@@ -3,6 +3,9 @@
 void bubbleSort(int* vetor, int tamanho_vetor, long* comparacoes, long* movimentacoes) {
     printf("BubbleSort selecionado!\n");
 
+    if (comparacoes) *comparacoes = 0;
+    if (movimentacoes) *movimentacoes = 0;
+
     // Implementação do Bubble Sort
     int i, j, aux, troca = 1;
     for(i=0; i < tamanho_vetor && troca; i++) {
