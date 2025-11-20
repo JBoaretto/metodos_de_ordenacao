@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void merge(int *vetor, int l, int m, int r, int *aux, long *comparacoes, long *movimentacoes) {
+void merge(int *vetor, int l, int m, int r, int *aux, unsigned long long *comparacoes, unsigned long long *movimentacoes) {
     int i = l, j = m + 1, k = l;
 
     // Intercala as duas metades [l..m] e [m+1..r] em aux
@@ -35,7 +35,7 @@ void merge(int *vetor, int l, int m, int r, int *aux, long *comparacoes, long *m
     }
 }
 
-void mergeSort_rec(int *vetor, int l, int r, int *aux, long *comparacoes, long *movimentacoes) {
+void mergeSort_rec(int *vetor, int l, int r, int *aux, unsigned long long *comparacoes, unsigned long long *movimentacoes) {
     if (l >= r) return;
 
     int m = l + (r - l) / 2;
@@ -50,7 +50,7 @@ void mergeSort_rec(int *vetor, int l, int r, int *aux, long *comparacoes, long *
     merge(vetor, l, m, r, aux, comparacoes, movimentacoes);
 }
 
-void mergeSort(int *vetor, int tamanho_vetor, long *comparacoes, long *movimentacoes) {
+void mergeSort(int *vetor, int tamanho_vetor, unsigned long long *comparacoes, unsigned long long *movimentacoes) {
     printf("MergeSort selecionado!\n");
 
     if (tamanho_vetor <= 1) return;

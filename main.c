@@ -3,8 +3,8 @@
 #include <string.h>
 #include <time.h>
 
-// ---- swap_int ÚNICA para todos os métodos ----
-static inline void swap_int(int *a, int *b, long *movimentacoes) {
+/* ---- swap_int ÚNICA para todos os métodos ---- */
+static inline void swap_int(int *a, int *b, unsigned long long *movimentacoes) {
     int tmp = *a;
     (*movimentacoes)++;   // tmp = *a
     *a = *b;
@@ -13,7 +13,7 @@ static inline void swap_int(int *a, int *b, long *movimentacoes) {
     (*movimentacoes)++;   // *b = tmp
 }
 
-// inclui implementações dos métodos (usam swap_int)
+/* inclui implementações dos métodos (DEVEM usar unsigned long long) */
 #include "./metodos/bubbleSort.c"
 #include "./metodos/contagemDosMenores.c"
 #include "./metodos/heapSort.c"
@@ -28,15 +28,15 @@ char* gerar_nome_arquivo(int caso_registros, int tamanho_vetor, char* nome_arqui
 int* ler_vetor(char* nome_arquivo, int tamanho_vetor);
 void menu_algoritmos();
 void menu_casos();
-void menu_tamanhos();
 void printar_vetor_final(int tamanho_vetor, int *vetor);
 
+/* Struct com unsigned long long */
 typedef struct {
-    int codigo;             // 1..9
-    const char *nome;       // "BubbleSort", etc
-    double tempo;           // tempo médio (ou único) em segundos
-    long comparacoes;       // médio ou único
-    long movimentacoes;     // médio ou único
+    int codigo;
+    const char *nome;
+    double tempo;
+    unsigned long long comparacoes;
+    unsigned long long movimentacoes;
 } ResultadoAlg;
 
 const char* nome_algoritmo_por_codigo(int codigo) {
@@ -55,38 +55,33 @@ const char* nome_algoritmo_por_codigo(int codigo) {
 }
 
 int main() {
-    // === Seleção de algoritmos ===
     int algoritmos_escolhidos[9];
     int qtd_alg = 0;
 
     menu_algoritmos();
+
     while (1) {
         int escolha;
         printf("Digite o numero do metodo (ou 10 para finalizar a selecao): ");
+
         if (scanf(" %d", &escolha) != 1) {
             printf("Entrada invalida.\n");
             return 1;
         }
 
-        if (escolha == 10) {
-            break;
-        }
-
+        if (escolha == 10) break;
         if (escolha < 1 || escolha > 9) {
-            printf("Opcao invalida! Tente novamente.\n");
+            printf("Opcao invalida!\n");
             continue;
         }
 
-        // evitar duplicados
-        int ja_existe = 0;
-        for (int i = 0; i < qtd_alg; i++) {
-            if (algoritmos_escolhidos[i] == escolha) {
-                ja_existe = 1;
-                break;
-            }
-        }
-        if (ja_existe) {
-            printf("Metodo ja selecionado, escolha outro ou digite 10 para finalizar.\n");
+        int existe = 0;
+        for (int i = 0; i < qtd_alg; i++)
+            if (algoritmos_escolhidos[i] == escolha)
+                existe = 1;
+
+        if (existe) {
+            printf("Metodo ja selecionado.\n");
             continue;
         }
 
@@ -99,7 +94,6 @@ int main() {
         return 0;
     }
 
-    // === Seleção do caso ===
     menu_casos();
     int caso;
     scanf(" %d", &caso);
@@ -109,207 +103,111 @@ int main() {
         return 0;
     }
 
-    const char *nome_caso = "";
-    switch (caso) {
-        case 1: nome_caso = "ordenado"; break;
-        case 2: nome_caso = "inverso"; break;
-        case 3: nome_caso = "aleatorio"; break;
-    }
+    const char *nome_caso =
+        (caso == 1 ? "ordenado" :
+         caso == 2 ? "inverso" : "aleatorio");
 
-    // === Seleção do tamanho ===
-    menu_tamanhos();
-    int tamanho_vetor_op;
-    scanf(" %d", &tamanho_vetor_op);
+    int tamanhos[] = {100, 1000, 10000, 100000};
 
-    int tamanho_vetor;
-    if (tamanho_vetor_op == 1) tamanho_vetor = 100;
-    else if (tamanho_vetor_op == 2) tamanho_vetor = 1000;
-    else if (tamanho_vetor_op == 3) tamanho_vetor = 10000;
-    else if (tamanho_vetor_op == 4) tamanho_vetor = 100000;
-    else {
-        printf("Tamanho invalido!\n");
-        return 0;
-    }
-
-    // === Criar CSV do zero nesta execução ===
-    const char *csv_filename = "resultados.csv";
-    FILE *csv = fopen(csv_filename, "w");
-    if (csv == NULL) {
-        printf("Erro ao criar arquivo CSV.\n");
-        return 1;
-    }
-    // cabeçalho
+    FILE *csv = fopen("resultados.csv", "w");
     fprintf(csv, "algoritmo,caso,tamanho,run,tempo_s,comparacoes,movimentacoes\n");
-
-    // Vetor de resultados finais (médias ou únicos) para comparar eficiência
-    ResultadoAlg resultados[9];
 
     char nome_arquivo[100];
 
-    // === Rodar cada algoritmo selecionado ===
-    for (int idx = 0; idx < qtd_alg; idx++) {
-        int codigo_alg = algoritmos_escolhidos[idx];
-        const char *nome_alg = nome_algoritmo_por_codigo(codigo_alg);
+    for (int t = 0; t < 4; t++) {
+        int tamanho_vetor = tamanhos[t];
 
-        double soma_tempo = 0.0;
-        long soma_comp = 0;
-        long soma_mov = 0;
-        int num_runs = (caso == 3) ? 5 : 1;
+        printf("\n==============================\n");
+        printf("===== TAMANHO DO VETOR: %d =====\n", tamanho_vetor);
+        printf("==============================\n");
 
-        printf("\n===== Executando %s | Caso: %s | Tamanho: %d =====\n",
-               nome_alg, nome_caso, tamanho_vetor);
+        ResultadoAlg resultados[9];
 
-        for (int run = 1; run <= num_runs; run++) {
-            int run_id = (caso == 3) ? run : 1;
+        for (int a = 0; a < qtd_alg; a++) {
+            int codigo_alg = algoritmos_escolhidos[a];
+            const char *nome_alg = nome_algoritmo_por_codigo(codigo_alg);
 
-            gerar_nome_arquivo(caso, tamanho_vetor, nome_arquivo,
-                               (caso == 3 ? run : 0));
+            double soma_tempo = 0.0;
+            unsigned long long soma_comp = 0;
+            unsigned long long soma_mov = 0;
 
-            int *vetor = ler_vetor(nome_arquivo, tamanho_vetor);
-            if (!vetor) {
-                printf("Erro ao carregar vetor (run %d) para %s.\n", run_id, nome_alg);
-                continue;
+            int num_runs = (caso == 3 ? 5 : 1);
+
+            printf("\n===== Executando %s | Caso: %s | Tam: %d =====\n",
+                    nome_alg, nome_caso, tamanho_vetor);
+
+            for (int run = 1; run <= num_runs; run++) {
+                gerar_nome_arquivo(caso, tamanho_vetor, nome_arquivo,
+                                   (caso == 3 ? run : 0));
+
+                int *vetor = ler_vetor(nome_arquivo, tamanho_vetor);
+
+                unsigned long long comparacoes = 0, movimentacoes = 0;
+
+                clock_t inicio = clock();
+
+                switch (codigo_alg) {
+                    case 1: bubbleSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                    case 2: selectionSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                    case 3: insertionSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                    case 4: shellSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                    case 5: quickSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                    case 6: heapSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                    case 7: mergeSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                    case 8: contagemDosMenores(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                    case 9: radixSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
+                }
+
+                clock_t fim = clock();
+                double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
+
+                soma_tempo += tempo;
+                soma_comp += comparacoes;
+                soma_mov += movimentacoes;
+
+                fprintf(csv, "%s,%s,%d,%d,%.8f,%llu,%llu\n",
+                    nome_alg, nome_caso, tamanho_vetor,
+                    run, tempo, comparacoes, movimentacoes);
+
+                free(vetor);
             }
 
-            long comparacoes = 0, movimentacoes = 0;
-            clock_t inicio = clock();
+            resultados[a].codigo = codigo_alg;
+            resultados[a].nome = nome_alg;
+            resultados[a].tempo = soma_tempo / num_runs;
+            resultados[a].comparacoes = soma_comp / num_runs;
+            resultados[a].movimentacoes = soma_mov / num_runs;
 
-            // chama o algoritmo correto
-            switch (codigo_alg) {
-                case 1: bubbleSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
-                case 2: selectionSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
-                case 3: insertionSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
-                case 4: shellSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
-                case 5: quickSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
-                case 6: heapSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
-                case 7: mergeSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
-                case 8: contagemDosMenores(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
-                case 9: radixSort(vetor, tamanho_vetor, &comparacoes, &movimentacoes); break;
-                default: printf("Codigo de metodo invalido.\n"); break;
-            }
-
-            clock_t fim = clock();
-            double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
-
-            int tempo_muito_pequeno = (tempo < 0.0000001);
-
-            soma_tempo += tempo;
-            soma_comp += comparacoes;
-            soma_mov += movimentacoes;
-
-            // ==== Impressão humana ====
-            if (num_runs > 1) {
-                printf("Run %d:\n", run_id);
-            } 
-
-            if (tempo_muito_pequeno) {
-                printf("  Tempo: extremamente pequeno (abaixo da precisao do clock)\n");
-            } else {
-                printf("  Tempo: %.8f s\n", tempo);
-            }
-
-            printf("  Comparacoes: %ld\n", comparacoes);
-            printf("  Movimentacoes: %ld\n", movimentacoes);
-
-            // registra no CSV (uma linha por execução)
-            fprintf(csv, "%s,%s,%d,%d,%.8f,%ld,%ld\n",
-                    nome_alg,
-                    nome_caso,
-                    tamanho_vetor,
-                    run_id,
-                    tempo,
-                    comparacoes,
-                    movimentacoes);
-
-            free(vetor);
+            printf(">>> %s - tempo %.8f | comp %llu | mov %llu\n",
+                   nome_alg,
+                   resultados[a].tempo,
+                   resultados[a].comparacoes,
+                   resultados[a].movimentacoes);
         }
 
-        // médias (ou valor único, se num_runs == 1)
-        double tempo_medio = soma_tempo / num_runs;
-        long comp_medias = soma_comp / num_runs;
-        long mov_medias = soma_mov / num_runs;
+        /* ENCONTRAR MELHORES */
+        int idx_tempo = 0, idx_comp = 0, idx_mov = 0;
 
-        resultados[idx].codigo = codigo_alg;
-        resultados[idx].nome = nome_alg;
-        resultados[idx].tempo = tempo_medio;
-        resultados[idx].comparacoes = comp_medias;
-        resultados[idx].movimentacoes = mov_medias;
-
-        if (num_runs > 1) {
-            printf(">>> %s - Medias (%d execucoes): tempo = %.6f s, comparacoes = %ld, movimentacoes = %ld\n",
-                   nome_alg, num_runs, tempo_medio, comp_medias, mov_medias);
+        for (int i = 1; i < qtd_alg; i++) {
+            if (resultados[i].tempo < resultados[idx_tempo].tempo)
+                idx_tempo = i;
+            if (resultados[i].comparacoes < resultados[idx_comp].comparacoes)
+                idx_comp = i;
+            if (resultados[i].movimentacoes < resultados[idx_mov].movimentacoes)
+                idx_mov = i;
         }
+
+        printf("\n===== MELHORES (TAM %d) =====\n", tamanho_vetor);
+        printf("Menor tempo: %s (%.8f s)\n",
+            resultados[idx_tempo].nome, resultados[idx_tempo].tempo);
+        printf("Menor comparacoes: %s (%llu)\n",
+            resultados[idx_comp].nome, resultados[idx_comp].comparacoes);
+        printf("Menor movimentacoes: %s (%llu)\n",
+            resultados[idx_mov].nome, resultados[idx_mov].movimentacoes);
     }
 
     fclose(csv);
-
-    // === Comparar qual metodo foi melhor em cada categoria ===
-if (qtd_alg > 0) {
-    int idx_melhor_tempo = 0;
-    int idx_melhor_comp = 0;
-    int idx_melhor_mov = 0;
-
-    for (int i = 1; i < qtd_alg; i++) {
-        if (resultados[i].tempo < resultados[idx_melhor_tempo].tempo) {
-            idx_melhor_tempo = i;
-        }
-        if (resultados[i].comparacoes < resultados[idx_melhor_comp].comparacoes) {
-            idx_melhor_comp = i;
-        }
-        if (resultados[i].movimentacoes < resultados[idx_melhor_mov].movimentacoes) {
-            idx_melhor_mov = i;
-        }
-    }
-
-    const double TIME_EPS = 0.0000001;
-    double menor_tempo = resultados[idx_melhor_tempo].tempo;
-
-    // Conta quantos tempos são “quase zero”
-    int qtd_tempos_muito_pequenos = 0;
-    for (int i = 0; i < qtd_alg; i++) {
-        if (resultados[i].tempo < TIME_EPS) {
-            qtd_tempos_muito_pequenos++;
-        }
-    }
-
-    printf("\n===== MELHORES METODOS NESTA EXECUCAO =====\n");
-
-    // Caso 1: vários métodos tiveram tempo “zero”
-    if (qtd_tempos_muito_pequenos >= 2) {
-        printf("Menor tempo: Nao e possivel determinar com confianca\n");
-        printf("             (tempos extremamente pequenos, abaixo da precisao do clock)\n");
-        printf("Tempos medidos:\n");
-        for (int i = 0; i < qtd_alg; i++) {
-            printf("  - %s: %.8f s\n", resultados[i].nome, resultados[i].tempo);
-        }
-    }
-    // Caso 2: só um método teve tempo extremamente pequeno
-    else if (menor_tempo < TIME_EPS) {
-        printf("Menor tempo: %s (%.8f s — abaixo da precisao do clock, interpretar com cautela)\n",
-               resultados[idx_melhor_tempo].nome,
-               menor_tempo);
-    }
-    // Caso 3: tempos normais, escolha clara
-    else {
-        printf("Menor tempo: %s (%.8f s)\n",
-               resultados[idx_melhor_tempo].nome,
-               menor_tempo);
-    }
-
-    // Comparações e movimentações continuam normais
-    printf("Menor numero de comparacoes: %s (%ld comparacoes)\n",
-           resultados[idx_melhor_comp].nome,
-           resultados[idx_melhor_comp].comparacoes);
-
-    printf("Menor numero de movimentacoes: %s (%ld movimentacoes)\n",
-           resultados[idx_melhor_mov].nome,
-           resultados[idx_melhor_mov].movimentacoes);
-}
-
-
-    printf("\nPrograma concluido! Arquivo '%s' criado com os resultados desta execucao.\n\n",
-           csv_filename);
-
+    printf("\nArquivo 'resultados.csv' criado!\n");
     return 0;
 }
 
@@ -387,14 +285,6 @@ void menu_casos() {
     printf("[1] Vetor Ordenado (Crescente)\n");
     printf("[2] Vetor Inversamente Ordenado (Decrescente)\n");
     printf("[3] Vetor Aleatorio (5 vetores diferentes, medias)\n\n");
-}
-
-void menu_tamanhos() {
-    printf("Por fim, escolha o tamanho do vetor:\n\n");
-    printf("[1] 100 elementos\n");
-    printf("[2] 1.000 elementos\n");
-    printf("[3] 10.000 elementos\n");
-    printf("[4] 100.000 elementos\n\n");
 }
 
 void printar_vetor_final(int tamanho_vetor, int *vetor) {

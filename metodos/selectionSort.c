@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void selectionSort(int *vetor, int tamanho_vetor, long *comparacoes, long *movimentacoes) {
+void selectionSort(int *vetor, int tamanho_vetor, unsigned long long *comparacoes, unsigned long long *movimentacoes) {
     printf("SelectionSort selecionado!\n");
 
     if (comparacoes) *comparacoes = 0;

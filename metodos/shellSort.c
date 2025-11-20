@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void shellSort(int* vetor, int tamanho_vetor, long* comparacoes, long* movimentacoes) {
+void shellSort(int* vetor, int tamanho_vetor, unsigned long long* comparacoes, unsigned long long* movimentacoes) {
     printf("ShellSort selecionado!\n");
 
     if (tamanho_vetor < 2) {

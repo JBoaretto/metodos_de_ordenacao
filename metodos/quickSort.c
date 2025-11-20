@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-static void quicksort_rec(int* vetor, int low, int high, long* comparacoes, long* movimentacoes) {
+static void quicksort_rec(int* vetor, int low, int high, unsigned long long* comparacoes, unsigned long long* movimentacoes) {
 
     if (low >= high) return;
 
@@ -67,7 +67,7 @@ static void quicksort_rec(int* vetor, int low, int high, long* comparacoes, long
 
 }
 
-void quickSort(int* vetor, int tamanho_vetor, long* comparacoes, long* movimentacoes) {
+void quickSort(int* vetor, int tamanho_vetor, unsigned long long* comparacoes, unsigned long long* movimentacoes) {
     printf("QuickSort selecionado!\n");
 
     if (tamanho_vetor < 2) return;

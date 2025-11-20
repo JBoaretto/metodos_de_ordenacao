@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void contagemDosMenores(int *vetor, int tamanho_vetor, long* comparacoes, long* movimentacoes){
+void contagemDosMenores(int *vetor, int tamanho_vetor, unsigned long long* comparacoes, unsigned long long* movimentacoes){
     printf("Contagem Dos Menores selecionado!\n");
 
     int arranjo_aux[tamanho_vetor];
