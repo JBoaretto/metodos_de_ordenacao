@@ -1,14 +1,5 @@
 #include <stdio.h>
 
-static inline void swap_int(int *a, int *b, long *movimentacoes) {
-    int tmp = *a;
-    (*movimentacoes)++;
-    *a = *b;
-    (*movimentacoes)++;
-    *b = tmp;
-    (*movimentacoes)++;
-}
-
 static void quicksort_rec(int* vetor, int low, int high, long* comparacoes, long* movimentacoes) {
 
     if (low >= high) return;

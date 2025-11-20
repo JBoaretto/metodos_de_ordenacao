@@ -1,14 +1,5 @@
 #include <stdio.h>
 
-static inline void swap_int(int *a, int *b, long *movimentacoes) {
-    int tmp = *a;
-    (*movimentacoes)++;
-    *a = *b;
-    (*movimentacoes)++;
-    *b = tmp;
-    (*movimentacoes)++;
-}
-
 static void heapify(int *vetor, int tamanho_vetor, int i, long *comparacoes, long *movimentacoes) {
     int largest = i;
     int left  = 2 * i + 1;

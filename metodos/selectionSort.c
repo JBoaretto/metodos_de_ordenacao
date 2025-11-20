@@ -1,14 +1,5 @@
 #include <stdio.h>
 
-static inline void swap_int(int *a, int *b, long *movimentacoes) {
-    int tmp = *a;
-    (*movimentacoes)++;
-    *a = *b;
-    (*movimentacoes)++;
-    *b = tmp;
-    (*movimentacoes)++;
-}
-
 void selectionSort(int *vetor, int tamanho_vetor, long *comparacoes, long *movimentacoes) {
     printf("SelectionSort selecionado!\n");
 

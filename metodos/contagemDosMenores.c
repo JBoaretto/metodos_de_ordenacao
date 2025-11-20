@@ -12,7 +12,6 @@ void contagemDosMenores(int *vetor, int tamanho_vetor, long* comparacoes, long* 
 
     for(i = 0; i < tamanho_vetor; i++){
         arranjo_aux[i] = 0;
-        (*movimentacoes)++; // movimentação: escrita no arranjo auxiliar
     }
 
     for(i = 1; i < tamanho_vetor; i++){
@@ -21,10 +20,8 @@ void contagemDosMenores(int *vetor, int tamanho_vetor, long* comparacoes, long* 
 
             if(vetor[i] < vetor[j]){
                 arranjo_aux[j]++;
-                (*movimentacoes)++; // movimentação: incremento no arranjo auxiliar
             }else{
                 arranjo_aux[i]++;
-                (*movimentacoes)++; // movimentação: incremento no arranjo auxiliar
             }
         }
     }

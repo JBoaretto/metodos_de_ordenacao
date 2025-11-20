@@ -19,20 +19,18 @@ void Contagem_de_Tipos(int *vetor, int tamanho_vetor, int exp, long* comparacoes
     // Contagem de tipos
     for(i = 0; i < tamanho_vetor; i++){
         count[(vetor[i] / exp) % 10]++;
-        (*movimentacoes)++;
     }
 
     // Contagem dos menores
     for(i = 1; i < 10; i++){
         count[i] += count[i - 1];
-        (*movimentacoes)++;
     }
 
     // Montando array final
     for(i = tamanho_vetor - 1; i >= 0; i--){
         array_final[count[(vetor[i] / exp) % 10] - 1] = vetor[i];
         count[(vetor[i] / exp) % 10]--;
-        (*movimentacoes) += 2;
+        (*movimentacoes)++;
     }
 
     // Copia o array de volta pro vetor original
@@ -53,6 +51,5 @@ void radixSort(int* vetor, int tamanho_vetor, long* comparacoes, long* movimenta
     
     for (int exp = 1; max / exp > 0; exp *= 10){
         Contagem_de_Tipos(vetor, tamanho_vetor, exp, comparacoes, movimentacoes);   
-        (*comparacoes)++;
     }
 }

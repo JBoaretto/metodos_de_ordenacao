@@ -1,0 +1,3 @@
+algoritmo,caso,tamanho,run,tempo_s,comparacoes,movimentacoes
+ShellSort,inverso,100000,1,0.00600000,1533494,2553946
+QuickSort,inverso,100000,1,0.00700000,2620334,793866
