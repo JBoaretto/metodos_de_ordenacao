@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int obter_maior_valor(int* vetor, int tamanho_vetor, long* comparacoes, long* movimentacoes){
+int obter_maior_valor(int* vetor, int tamanho_vetor, unsigned long long* comparacoes, unsigned long long* movimentacoes){
     int max = vetor[0];
     for(int i = 1; i < tamanho_vetor; i++){
         (*comparacoes)++;
@@ -12,7 +12,7 @@ int obter_maior_valor(int* vetor, int tamanho_vetor, long* comparacoes, long* mo
     return max;
 }
 
-void Contagem_de_Tipos(int *vetor, int tamanho_vetor, int exp, long* comparacoes, long* movimentacoes){
+void Contagem_de_Tipos(int *vetor, int tamanho_vetor, int exp, unsigned long long* comparacoes, unsigned long long* movimentacoes){
     int array_final[tamanho_vetor];
     int i, count[10] = {0};
 
@@ -40,7 +40,7 @@ void Contagem_de_Tipos(int *vetor, int tamanho_vetor, int exp, long* comparacoes
     }
 }
 
-void radixSort(int* vetor, int tamanho_vetor, long* comparacoes, long* movimentacoes){
+void radixSort(int* vetor, int tamanho_vetor, unsigned long long* comparacoes, unsigned long long* movimentacoes){
     printf("RadixSort selecionado!\n");
 
     if (comparacoes) *comparacoes = 0;

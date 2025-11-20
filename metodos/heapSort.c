@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-static void heapify(int *vetor, int tamanho_vetor, int i, long *comparacoes, long *movimentacoes) {
+static void heapify(int *vetor, int tamanho_vetor, int i, unsigned long long *comparacoes, unsigned long long *movimentacoes) {
     int largest = i;
     int left  = 2 * i + 1;
     int right = 2 * i + 2;
@@ -28,7 +28,7 @@ static void heapify(int *vetor, int tamanho_vetor, int i, long *comparacoes, lon
     }
 }
 
-void heapSort(int *vetor, int tamanho_vetor, long *comparacoes, long *movimentacoes) {
+void heapSort(int *vetor, int tamanho_vetor, unsigned long long *comparacoes, unsigned long long *movimentacoes) {
     printf("HeapSort selecionado!\n");
 
     if (tamanho_vetor <= 1) return;
